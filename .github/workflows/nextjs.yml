@@ -28,6 +28,18 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    environment: github-pages
+    env:
+      NEXT_PUBLIC_INDEX_JSON_URL: ${{ vars.NEXT_PUBLIC_INDEX_JSON_URL }}
+      NEXT_PUBLIC_MEMBER_JSON_URL: ${{ vars.NEXT_PUBLIC_MEMBER_JSON_URL }}
+      NEXT_PUBLIC_AD_JSON_URL: ${{ vars.NEXT_PUBLIC_AD_JSON_URL }}
+      NEXT_PUBLIC_DIAGRAM_FORM: ${{ vars.NEXT_PUBLIC_DIAGRAM_FORM }}
+      NEXT_PUBLIC_ONEMAN_FORM: ${{ vars.NEXT_PUBLIC_ONEMAN_FORM }}
+      NEXT_PUBLIC_DIAGRAM_IMAGE: ${{ vars.NEXT_PUBLIC_DIAGRAM_IMAGE }}
+      ONEMAN_JSON_URL: ${{ secrets.ONEMAN_JSON_URL }}
+      ONEMAN_JSON_URL2: ${{ secrets.ONEMAN_JSON_URL2 }}
+      SITE_URL: ${{ secrets.SITE_URL }}
+      GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
