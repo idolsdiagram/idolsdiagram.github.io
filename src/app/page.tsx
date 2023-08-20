@@ -1,0 +1,61 @@
+import dayjs from "dayjs"
+import Content from "./Content"
+
+export type OnemanJson = {
+    range: string
+    majorDimension: string
+    values: string[][]
+}
+
+export type RecentEvent = {
+    date: string
+    name: string
+    title: string
+    place: string
+    start: string
+    url: string
+    cp: number
+}
+
+/**
+ * ページコンポーネント
+ */
+export default async function Page() {
+    // フォームからの入力を取得
+    const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
+    // 手入力分を取得
+    const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 10 } })).json() : undefined
+    if (!onemanJson) {
+        return <></>
+    }
+    // 手入力分を追加
+    if (onemanJson2) {
+        onemanJson.values = onemanJson.values.concat(onemanJson2.values)
+    }
+    const recentEvents = onemanJson.values.slice(1).filter((value) => {
+        return value[7] === 'OK'
+    }).filter((value) => {
+        // 30日以内
+        const days = dayjs(value[4]).diff(dayjs().format('YYYY-MM-DD'), 'day')
+        return days >= 0 && days <= 30
+    }).sort((a, b) => {
+        // 日付昇順
+        return dayjs(`${a[4]} ${a[5]}`).diff(dayjs(`${b[4]} ${b[5]}`))
+    }).map((value) => {
+        return {
+            name: value[1],
+            title: value[2],
+            place: value[3],
+            date: dayjs(value[4]).format('YYYY年M月D日'),
+            start: value[5].replace(/:\d+$/, ''),
+            url: value[6],
+            cp: value[8] ? parseInt(value[8], 10) : 0,
+        }
+    })
+
+    return (
+        <>
+            <Content recentEvents={recentEvents} />
+        </>
+    )
+}
