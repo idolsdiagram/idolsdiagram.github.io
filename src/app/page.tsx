@@ -17,6 +17,36 @@ export type RecentEvent = {
     cp: number
 }
 
+export const metadata = {
+    title: `${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+    description: '',
+    openGraph: {
+        title: `${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+        description: `${process.env.NEXT_PUBLIC_MEATADATA_DESCRIPTION}`,
+        type: 'website',
+        url: `${process.env.SITE_URL}`,
+        images: [
+            {
+                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/og.png`,
+                type: 'image/png',
+                alt: `${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: `${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+        description: `${process.env.NEXT_PUBLIC_MEATADATA_DESCRIPTION}`,
+        images: [
+            {
+                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/twitter.png`,
+                type: 'image/png',
+                alt: `${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+            },
+        ],
+    },
+}
+
 /**
  * ページコンポーネント
  */

@@ -10,6 +10,7 @@ on:
     branches: ["main"]
 
   schedule:
+    - cron: '0 15 * * *'
     - cron: '55 2 * * *'
 
   # Allows you to run this workflow manually from the Actions tab
@@ -39,6 +40,9 @@ jobs:
       NEXT_PUBLIC_DIAGRAM_FORM: ${{ vars.NEXT_PUBLIC_DIAGRAM_FORM }}
       NEXT_PUBLIC_ONEMAN_FORM: ${{ vars.NEXT_PUBLIC_ONEMAN_FORM }}
       NEXT_PUBLIC_DIAGRAM_IMAGE: ${{ vars.NEXT_PUBLIC_DIAGRAM_IMAGE }}
+      NEXT_PUBLIC_MEATADATA_TITLE: ${{ vars.NEXT_PUBLIC_MEATADATA_TITLE }}
+      NEXT_PUBLIC_MEATADATA_DESCRIPTION: ${{ vars.NEXT_PUBLIC_MEATADATA_DESCRIPTION }}
+      NEXT_PUBLIC_MEATADATA_IMAGE_URL: ${{ vars.NEXT_PUBLIC_MEATADATA_IMAGE_URL }}
       ONEMAN_JSON_URL: ${{ secrets.ONEMAN_JSON_URL }}
       ONEMAN_JSON_URL2: ${{ secrets.ONEMAN_JSON_URL2 }}
       SITE_URL: ${{ secrets.SITE_URL }}
@@ -92,7 +96,7 @@ jobs:
         env:
           TZ: 'Asia/Tokyo'
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
-      - name: Static HTML export with Next.js
+      - name: Sitemap export with next-sitemap
         run: ${{ steps.detect-package-manager.outputs.runner }} next-sitemap --config next-sitemap.config.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2

@@ -5,8 +5,8 @@ import dayjs from "dayjs"
 import { decodeBase64, encodeBase64 } from "@/app/components/Base64"
 
 export const metadata = {
-    title: 'IDOLS DIAGRAM',
-    description: '',
+    title: `${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+    description: `${process.env.NEXT_PUBLIC_MEATADATA_DESCRIPTION}`,
     openGraph: {},
     twitter: {},
 }
@@ -16,28 +16,29 @@ export const metadata = {
  * @param param0.params.id グループ名
  */
 export default async function Page({ params }: { params: { id: string } }) {
-    metadata.title = `${decodeBase64(params.id)} | IDOLS DIAGRAM`
+    metadata.title = `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`
     metadata.openGraph = {
-        title: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
-        description: '',
+        title: `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+        description: `${process.env.NEXT_PUBLIC_MEATADATA_DESCRIPTION}`,
         type: 'website',
         url: `${process.env.SITE_URL}/g/${params.id}`,
         images: [
             {
-                url: `https://idolsdiagram.s3-ap-northeast-1.amazonaws.com/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
+                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
                 type: 'image/png',
-                alt: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
+                alt: `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
             },
         ],
     }
     metadata.twitter = {
-        title: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
-        description: '',
+        card: 'summary_large_image',
+        title: `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
+        description: `${process.env.NEXT_PUBLIC_MEATADATA_DESCRIPTION}`,
         images: [
             {
-                url: `https://idolsdiagram.s3-ap-northeast-1.amazonaws.com/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
+                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
                 type: 'image/png',
-                alt: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
+                alt: `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
             },
         ],
     }
