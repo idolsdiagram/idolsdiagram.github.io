@@ -4,11 +4,43 @@ import { OnemanJson } from "@/app/page"
 import dayjs from "dayjs"
 import { decodeBase64, encodeBase64 } from "@/app/components/Base64"
 
+export const metadata = {
+    title: 'IDOLS DIAGRAM',
+    description: '',
+    openGraph: {},
+    twitter: {},
+}
+
 /**
  * グループページコンポーネント
  * @param param0.params.id グループ名
  */
 export default async function Page({ params }: { params: { id: string } }) {
+    metadata.title = `${decodeBase64(params.id)} | IDOLS DIAGRAM`
+    metadata.openGraph = {
+        title: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
+        description: '',
+        type: 'website',
+        url: `${process.env.SITE_URL}/g/${params.id}`,
+        images: [
+            {
+                url: `https://idolsdiagram.s3-ap-northeast-1.amazonaws.com/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
+                type: 'image/png',
+                alt: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
+            },
+        ],
+    }
+    metadata.twitter = {
+        title: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
+        description: '',
+        images: [
+            {
+                url: `https://idolsdiagram.s3-ap-northeast-1.amazonaws.com/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
+                type: 'image/png',
+                alt: `${decodeBase64(params.id)} | IDOLS DIAGRAM`,
+            },
+        ],
+    }
     // フォームからの入力を取得
     const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
     // 手入力分を取得
