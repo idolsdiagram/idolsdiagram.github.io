@@ -38,12 +38,12 @@ export default function Event({ event, index, events }: { event: RecentEvent, in
                 </div>
                 <div className="mt-1">
                     <div className="text-sm">
-                        <span><CalendarMonthIcon className="text-sm" /></span>
+                        <span><CalendarMonthIcon style={{ fontSize: '1rem' }} /></span>
                         <span className="ml-1">{event.date}</span>
-                        {event.start !== '' ? <><span className="ml-2"><AccessTimeIcon className="text-sm" /></span><span className="ml-1">{event.start}開演</span></> : <></>}
+                        {event.start !== '' ? <><span className="ml-2"><AccessTimeIcon style={{ fontSize: '1rem' }} /></span><span className="ml-1">{event.start}開演</span></> : <></>}
                     </div>
                     <div className="text-sm">
-                        <span><PlaceIcon className="text-sm" /></span>
+                        <span><PlaceIcon style={{ fontSize: '1rem' }} /></span>
                         <span className="ml-1">{event.place}</span>
                     </div>
                     <EventDetail event={event} />

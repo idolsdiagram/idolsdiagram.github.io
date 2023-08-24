@@ -12,7 +12,7 @@ export function EventDetail({ event }: { event: RecentEvent }) {
         <div className="text-xs text-blue-600 hover:text-blue-800 mt-1 text-right">
             <a href={event.url} target="_blakc">
                 <span>イベント詳細</span>
-                <OpenInNewIcon className="text-sm" />
+                <OpenInNewIcon style={{ fontSize: '1rem' }} />
             </a>
         </div>
     )
