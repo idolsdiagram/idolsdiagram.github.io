@@ -1,14 +1,11 @@
 import { RecentEvent } from "@/app/page"
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import PlaceIcon from '@mui/icons-material/Place'
 import dayjs from "dayjs"
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { Card } from "@mui/material"
 import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis } from "recharts"
 import Carousel from "react-material-ui-carousel"
-import { EventDetail } from "@/app/components/EventDetail"
 dayjs.extend(customParseFormat)
+import Event from '@/app/g/[id]/components/Event'
 
 /**
  * ワンマン・単独公演パネルコンポーネント
@@ -71,46 +68,11 @@ export function PanelOneman({ id, events }: { id: string, events: RecentEvent[] 
                 </div>
             </div>
             {futureEvents.length === 0 && pastEvents.length === 0 ? <div className="pt-1">データがありません</div> : <></>}
-            {futureEvents.map((event, index) => {
+            {events.map((event, index, arr) => {
                 return (
-                    <div className="shadow-lg box-border border rounded-lg px-3 pt-1 pb-2 mt-3 w-full border-zinc-200 bg-zinc-50" key={index}>
-                        <div className="text-sm mt-1">
-                            <span className="whitespace-pre-line">{event.title}</span>
-                        </div>
-                        <div className="mt-1">
-                            <div className="text-sm">
-                                <span><CalendarMonthIcon className="text-sm" /></span>
-                                <span className="ml-1">{event.date}</span>
-                                {event.start !== '' ? <><span className="ml-2"><AccessTimeIcon className="text-sm" /></span><span className="ml-1">{event.start}開演</span></> : <></>}
-                            </div>
-                            <div className="text-sm">
-                                <span><PlaceIcon className="text-sm" /></span>
-                                <span className="ml-1">{event.place}</span>
-                            </div>
-                            <EventDetail event={event} />
-                        </div>
-                    </div>
-                )
-            })}
-            {pastEvents.map((event, index) => {
-                return (
-                    <div className="shadow-lg box-border border rounded-lg px-3 pt-1 pb-2 mt-3 w-full border-zinc-200 bg-zinc-200" key={index}>
-                        <div className="text-sm mt-1">
-                            <span className="whitespace-pre-line">{event.title}</span>
-                        </div>
-                        <div className="mt-1">
-                            <div className="text-sm">
-                                <span><CalendarMonthIcon className="text-sm" /></span>
-                                <span className="ml-1">{event.date}</span>
-                                {event.start !== '' ? <><span className="ml-2"><AccessTimeIcon className="text-sm" /></span><span className="ml-1">{event.start}開演</span></> : <></>}
-                            </div>
-                            <div className="text-sm">
-                                <span><PlaceIcon className="text-sm" /></span>
-                                <span className="ml-1">{event.place}</span>
-                            </div>
-                            <EventDetail event={event} />
-                        </div>
-                    </div>
+                    <>
+                        <Event event={event} index={index} events={arr} />
+                    </>
                 )
             })}
         </>
