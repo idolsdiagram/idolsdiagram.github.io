@@ -34,7 +34,9 @@ export default function Event({ event, index, events }: { event: RecentEvent, in
             <div className={`shadow-lg box-border border rounded-lg px-3 pt-1 pb-2 mt-3 w-full border-zinc-200 ${bgcolor}`} key={index}>
                 <div className="text-sm mt-1">
                     <span className="whitespace-nowrap text-blue-600 hover:text-blue-800 mt-1 text-right"><a href={'/g/' + encodeBase64(event.name)}>{event.name}</a></span>
-                    <span className="whitespace-pre-line">『{event.title}』</span>
+                </div>
+                <div className="text-sm mt-1">
+                    <span className="whitespace-pre-line">{event.title}</span>
                 </div>
                 <div className="mt-1">
                     <div className="text-sm">
