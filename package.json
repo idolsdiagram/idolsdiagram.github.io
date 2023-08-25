@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap --config next-sitemap.config.js",
+    "build": "npm run clean && next build && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rimraf out && rimraf .next && rimraf docs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -35,6 +36,7 @@
     "eslint-config-next": "^13.4.12",
     "eslint-plugin-jsdoc": "^46.4.5",
     "next-sitemap": "^4.2.2",
+    "rimraf": "^5.0.1",
     "typedoc": "^0.24.8"
   }
 }
