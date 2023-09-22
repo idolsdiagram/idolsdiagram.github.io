@@ -34,28 +34,30 @@ export default function Content({ recentEvents }: { recentEvents: RecentEvent[] 
 
     return (
         <>
-            <Nav setSearch={setSearch} />
-            <Ad json={adJson} />
-            <Box>
-                <TabContext value={tab}>
-                    <Box>
-                        <TabList onChange={(e, v) => setTab(v)} scrollButtons="auto" centered>
-                            <Tab label="グループ検索" value={"1"} sx={{ px: 1, py: 0 }} icon={<GroupsIcon />} iconPosition="top" />
-                            <Tab label="アイドル検索" value={"2"} sx={{ px: 1, py: 0 }} icon={<PersonIcon />} iconPosition="top" />
-                            <Tab label="ワンマン・単独公演" value={"0"} sx={{ px: 1, py: 0 }} icon={<CalendarMonthIcon />} iconPosition="top" />
-                        </TabList>
-                    </Box>
-                    <TabPanel value="1" sx={{ px: 2, py: 1 }}>
-                        <PanelGroupSearch json={indexJson} search={search.toLowerCase()} />
-                    </TabPanel>
-                    <TabPanel value="2" sx={{ px: 2, py: 1 }}>
-                        <PanelMemberSearch json={membersJson} search={search.toLowerCase()} />
-                    </TabPanel>
-                    <TabPanel value="0" sx={{ px: 2, py: 1 }}>
-                        <PanelOneman events={recentEvents} search={search.toLowerCase()} />
-                    </TabPanel>
-                </TabContext>
-            </Box>
+            <div className="container mx-auto bg-white">
+                <Nav setSearch={setSearch} />
+                <Ad json={adJson} />
+                <Box>
+                    <TabContext value={tab}>
+                        <Box>
+                            <TabList onChange={(e, v) => setTab(v)} scrollButtons="auto" centered>
+                                <Tab label="グループ検索" value={"1"} sx={{ px: 1, py: 0 }} icon={<GroupsIcon />} iconPosition="top" />
+                                <Tab label="アイドル検索" value={"2"} sx={{ px: 1, py: 0 }} icon={<PersonIcon />} iconPosition="top" />
+                                <Tab label="ワンマン・単独公演" value={"0"} sx={{ px: 1, py: 0 }} icon={<CalendarMonthIcon />} iconPosition="top" />
+                            </TabList>
+                        </Box>
+                        <TabPanel value="1" sx={{ px: 2, py: 1 }}>
+                            <PanelGroupSearch json={indexJson} search={search.toLowerCase()} />
+                        </TabPanel>
+                        <TabPanel value="2" sx={{ px: 2, py: 1 }}>
+                            <PanelMemberSearch json={membersJson} search={search.toLowerCase()} />
+                        </TabPanel>
+                        <TabPanel value="0" sx={{ px: 2, py: 1 }}>
+                            <PanelOneman events={recentEvents} search={search.toLowerCase()} />
+                        </TabPanel>
+                    </TabContext>
+                </Box>
+            </div>
         </>
     )
 }
