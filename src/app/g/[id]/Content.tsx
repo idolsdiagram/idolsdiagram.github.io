@@ -47,7 +47,9 @@ export function Content({ params, events }: { params: { id: string }, events: Re
                             <div className="h-8 text-right">
                                 <RelatedMenu json={indexJson} name={decodeBase64(params.id)} />
                             </div>
-                            <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" />
+                            <div className="flex justify-center">
+                                <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" />
+                            </div>
                         </TabPanel>
                         <TabPanel value="0" sx={{ px: 1, py: 1 }}>
                             <PanelOneman id={decodeBase64(params.id)} events={events} />
