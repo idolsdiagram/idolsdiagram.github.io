@@ -353,7 +353,7 @@ function ReportModal(
             }
         }
         if (diagramUrlRef.current) {
-            if (diagramUrl !== '' && !diagramUrl.match(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)) {
+            if (diagramUrl !== '' && !diagramUrl.match(/^http(s)?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+$/g)) {
                 errors.push('参考URL')
                 diagramUrlRef.current.previousElementSibling?.classList.add('text-red-500')
                 diagramUrlRef.current.classList.add('border-red-500')
