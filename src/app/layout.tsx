@@ -30,6 +30,7 @@ export default function RootLayout({
           gtag('config', '${process.env.GA_MEASUREMENT_ID}');
         `}
       </Script>
+      <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3746158105867064" crossOrigin="anonymous"></Script>
       <body className={inter.className}>{children}</body>
     </html>
   )
