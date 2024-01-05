@@ -7,7 +7,15 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { useEffect, useState } from 'react'
 import { encodeBase64 } from './Base64'
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+
 dayjs.extend(customParseFormat)
+
+// dayjsのタイムゾーン設定
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.tz.setDefault('Asia/Tokyo')
 
 /**
  * イベント情報コンポーネント
