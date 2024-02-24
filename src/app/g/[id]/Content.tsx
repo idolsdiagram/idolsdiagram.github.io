@@ -4,7 +4,7 @@ import { Ad, AdJson } from "@/app/components/Ad"
 import { Nav } from "@/app/components/Nav"
 import { EventLabels, IndexJson } from "@/app/components/PanelGroupSearch"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
-import { Box, Tab, Typography } from "@mui/material"
+import { Box, Grid, Stack, Switch, Tab, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
@@ -21,6 +21,7 @@ export function Content({ params, events }: { params: { id: string }, events: Re
     const [tab, setTab] = useState("1")
     const [indexJson, setIndexJson] = useState({} as IndexJson)
     const [adJson, setAdJson] = useState([] as AdJson[])
+    const [simple, setSimple] = useState(true)
 
     useEffect(() => {
         (async () => {
@@ -44,11 +45,22 @@ export function Content({ params, events }: { params: { id: string }, events: Re
                             </TabList>
                         </Box>
                         <TabPanel value="1" sx={{ px: 1, py: 1 }}>
-                            <div className="h-8 text-right">
-                                <RelatedMenu json={indexJson} name={decodeBase64(params.id)} />
-                            </div>
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <Stack direction="row" spacing={0} alignItems="center">
+                                        <Typography variant="caption" sx={{ p: 0 }}>全体表示</Typography>
+                                        <Switch defaultChecked onChange={(e, v) => setSimple(v)} />
+                                        <Typography variant="caption">省略表示</Typography>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <div className="h-8 text-right">
+                                        <RelatedMenu json={indexJson} name={decodeBase64(params.id)} />
+                                    </div>
+                                </Grid>
+                            </Grid>
                             <div className="flex justify-center">
-                                <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" />
+                                {simple ? <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE_SIMPLE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" /> : <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" />}
                             </div>
                         </TabPanel>
                         <TabPanel value="0" sx={{ px: 1, py: 1 }}>

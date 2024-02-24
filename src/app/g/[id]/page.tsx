@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         url: `${process.env.SITE_URL}/g/${params.id}`,
         images: [
             {
-                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
+                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/images_s/${encodeURIComponent(decodeBase64(params.id))}.png`,
                 type: 'image/png',
                 alt: `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
             },
@@ -36,7 +36,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         description: `${process.env.NEXT_PUBLIC_MEATADATA_DESCRIPTION}`,
         images: [
             {
-                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/images/${encodeURIComponent(decodeBase64(params.id))}.png`,
+                url: `${process.env.NEXT_PUBLIC_MEATADATA_IMAGE_URL}/images_s/${encodeURIComponent(decodeBase64(params.id))}.png`,
                 type: 'image/png',
                 alt: `${decodeBase64(params.id)} | ${process.env.NEXT_PUBLIC_MEATADATA_TITLE}`,
             },
