@@ -60,7 +60,8 @@ export function Content({ params, events }: { params: { id: string }, events: Re
                                 </Grid>
                             </Grid>
                             <div className="flex justify-center">
-                                {simple ? <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE_SIMPLE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" /> : <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" />}
+                                {simple ? <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_SVG_SIMPLE}/${encodeURIComponent(decodeBase64(params.id))}.svg`} className="" alt="diagram" /> : <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_SVG}/${encodeURIComponent(decodeBase64(params.id))}.svg`} className="" alt="diagram" />}
+                                {/* {simple ? <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE_SIMPLE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" /> : <img src={`${process.env.NEXT_PUBLIC_DIAGRAM_IMAGE}/${encodeURIComponent(decodeBase64(params.id))}.png`} className="" alt="diagram" />} */}
                             </div>
                         </TabPanel>
                         <TabPanel value="0" sx={{ px: 1, py: 1 }}>
