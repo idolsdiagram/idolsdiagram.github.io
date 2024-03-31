@@ -58,7 +58,7 @@ export function Nav({ setSearch, name }: { setSearch: ((search: string) => void)
     if (setSearch === undefined) {
         return (
             <>
-                <div className="flex items-center flex-row box-decoration-clone bg-gradient-to-r from-indigo-600 to-pink-500 h-14 p-2">
+                <div className="flex items-center flex-row box-decoration-clone bg-gradient-to-r from-pink-600 to-pink-500 h-14 p-2">
                     <div className="flex-none pr-2 text-center text-white font-bold leading-none"><a href="/">IDOLS<br />DIAGRAM</a></div>
                     <div className="grow relative"></div>
                     <div className="flex-none pl-2">
@@ -97,7 +97,7 @@ export function Nav({ setSearch, name }: { setSearch: ((search: string) => void)
     // 検索フォームがある場合
     return (
         <>
-            <div className="flex items-center flex-row box-decoration-clone bg-gradient-to-r from-indigo-600 to-pink-500 h-14 p-2">
+            <div className="flex items-center flex-row box-decoration-clone bg-gradient-to-r from-pink-600 to-pink-500 h-14 p-2">
                 <div className="flex-none pr-2 text-center text-white font-bold leading-none">IDOLS<br />DIAGRAM</div>
                 <div className="grow relative">
                     <div className="absolute flex inset-y-1 left-2">

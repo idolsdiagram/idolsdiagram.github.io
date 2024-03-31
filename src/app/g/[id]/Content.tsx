@@ -33,7 +33,7 @@ export function Content({ params, events }: { params: { id: string }, events: Re
         <>
             <div className="container mx-auto bg-white">
                 <Nav setSearch={undefined} name={decodeBase64(params.id)} />
-                <Typography variant="h6" component="div" sx={{ px: 1, pt: 1 }}>{decodeBase64(params.id)}</Typography>
+                <Typography variant="h6" component="div" sx={{ px: 1, pt: 1 }} className="text-pink-600">{decodeBase64(params.id)}</Typography>
                 <EventLabels json={indexJson.event} name={decodeURIComponent(params.id)} />
                 <Ad json={adJson} name={decodeURIComponent(params.id)} />
                 <Box>
