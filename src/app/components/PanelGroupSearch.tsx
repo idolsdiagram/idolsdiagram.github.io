@@ -184,7 +184,7 @@ export function EventLabels({ json, name }: { json: IndexJson["event"], name: st
                 // イベント毎のスタイルをマージ
                 const attributes = Object.assign(baseStyle, cssAttributesToObject(json[event].style))
                 // ラベルの表示名を取得
-                let _key = event
+                let _key: string | undefined | null = event
                 if (json[event].label !== undefined && json[event].label !== null) {
                     _key = json[event].label
                     // _key = event.replace(/\d{4}/, '').split(' ').splice(0, 2).join(' ')
