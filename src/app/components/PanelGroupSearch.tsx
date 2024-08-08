@@ -10,6 +10,7 @@ export type IndexJson = {
     }
     event: {
         [key: string]: {
+            label?: string | null
             style: string
             data: string[],
         }
@@ -182,8 +183,15 @@ export function EventLabels({ json, name }: { json: IndexJson["event"], name: st
                 }
                 // イベント毎のスタイルをマージ
                 const attributes = Object.assign(baseStyle, cssAttributesToObject(json[event].style))
-                // イベント名から年度を除去
-                const _key = event.replace(/\d{4}/, '').split(' ').splice(0, 2).join(' ')
+                // ラベルの表示名を取得
+                let _key: string = ''
+                if (json[event].label !== undefined && json[event].label !== null) {
+                    _key = json[event].label
+                } else {
+                    // ラベルがない場合はイベント名を表示
+                    _key = event
+                    // _key = event.replace(/\d{4}/, '').split(' ').splice(0, 2).join(' ')
+                }
                 return (
                     <span className="rounded-sm px-1 ml-1 mb-1 text-xs whitespace-nowrap align-middle" style={attributes} key={event}>{_key}</span>
                 )
