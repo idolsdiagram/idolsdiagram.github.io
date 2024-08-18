@@ -65,10 +65,6 @@ function Banner({ ad, play, setPlay }: { ad: AdItem, play: boolean, setPlay: (pl
         if (!ad || !ad.img) {
             return
         }
-        // 動画が無い場合は画像のリンクを有効にする
-        if (ad.video['4x3'] == undefined || ad.video['16x9'] == undefined) {
-            setPlay(true)
-        }
         setBannerImage(ad.img[0])
     }, [ad])
     const bannerClick = () => {
