@@ -4,7 +4,7 @@ import { Nav } from "./components/Nav"
 import { Ad, AdJson } from "./components/Ad"
 import { IndexJson, PanelGroupSearch } from "./components/PanelGroupSearch"
 import { MembersJson, PanelMemberSearch } from "./components/PanelMemberSearch"
-import { Box, Tab } from "@mui/material"
+import { Box, Link, Tab } from "@mui/material"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { useEffect, useMemo, useState } from "react"
 import PersonIcon from '@mui/icons-material/Person'
@@ -36,6 +36,9 @@ export default function Content({ recentEvents }: { recentEvents: RecentEvent[] 
         <>
             <div className="container mx-auto bg-white">
                 <Nav setSearch={setSearch} />
+                <Link href={'https://t.livepocket.jp/e/pi23i'} display={'flex'} justifyContent={'center'}>
+                    <img src="/ad/airattic.tokyo20240826.png" alt="airattic.tokyo" width={647} height={196} />
+                </Link>
                 <Ad json={adJson} />
                 <Box>
                     <TabContext value={tab}>
