@@ -36,7 +36,7 @@ export default function Content({ recentEvents }: { recentEvents: RecentEvent[] 
         <>
             <div className="container mx-auto bg-white">
                 <Nav setSearch={setSearch} />
-                <Link href={'https://t.livepocket.jp/e/pi23i'} display={'flex'} justifyContent={'center'}>
+                <Link href={'https://t.livepocket.jp/e/pi23i'} target="_blank" rel="noopener noreferrer" display={'flex'} justifyContent={'center'}>
                     <img src="/ad/airattic.tokyo20240826.png" alt="airattic.tokyo" width={647} height={196} />
                 </Link>
                 <Ad json={adJson} />
