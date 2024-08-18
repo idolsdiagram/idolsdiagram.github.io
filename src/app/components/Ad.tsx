@@ -23,7 +23,6 @@ type AdItem = {
  * @param param0.name グループ名
  */
 export function Ad({ json, name }: { json: AdJson[], name?: string }) {
-    console.log('name', name)
     const [ads, setAds] = useState([] as AdJson[])
     const [ad, setAd] = useState({} as AdItem)
     const [play, setPlay] = useState(false)
@@ -46,7 +45,7 @@ export function Ad({ json, name }: { json: AdJson[], name?: string }) {
         // setAd(json[Math.floor(Math.random() * json.length)])
     }, [json, name])
 
-    // 表示する広告がない場合
+    // 表示する告がない場合
     if (!ad || !ad.img || !ad.video) {
         return <></>
     }
@@ -79,7 +78,7 @@ function Banner({ ad, play, setPlay }: { ad: AdItem, play: boolean, setPlay: (pl
     }
     return (
         <>
-            <div className="flex justify-center items-center p-0">
+            <div className="flex justify-center items-center p-2">
                 <img src={bannerImage} className="cursor-pointer" alt="広告" onClick={bannerClick} />
             </div>
         </>
@@ -90,10 +89,6 @@ function Video({ ad, play }: { ad: AdItem, play: boolean }) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const qtRef = useRef<HTMLSourceElement>(null)
     const webmRef = useRef<HTMLSourceElement>(null)
-
-    if (!ad || !ad.video || !ad.video['4x3'] || !ad.video['16x9']) {
-        return <></>
-    }
 
     useEffect(() => {
         if (!ad || !ad.video) {
