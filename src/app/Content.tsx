@@ -36,6 +36,9 @@ export default function Content({ recentEvents }: { recentEvents: RecentEvent[] 
         <>
             <div className="container mx-auto bg-white">
                 <Nav setSearch={setSearch} />
+                <Link href={'http://eplus.jp/airattic/'} target="_blank" rel="noopener noreferrer" display={'flex'} justifyContent={'center'}>
+                    <img src="/ad/airattic.tokyo20241116.png" alt="airattic.tokyo" width={770} height={270} />
+                </Link>
                 <Ad json={adJson} />
                 <Box>
                     <TabContext value={tab}>
