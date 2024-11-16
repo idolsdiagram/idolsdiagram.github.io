@@ -46,11 +46,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
     // 手入力分を取得
     const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 10 } })).json() : undefined
-    if (!onemanJson) {
+    if (!onemanJson || !onemanJson.values) {
         return <></>
     }
     // 手入力分を追加
-    if (onemanJson2) {
+    if (onemanJson2?.values) {
         onemanJson.values = onemanJson.values.concat(onemanJson2.values)
     }
     const events = onemanJson.values.slice(1).filter((value) => {
