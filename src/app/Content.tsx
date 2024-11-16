@@ -4,9 +4,9 @@ import { Nav } from "./components/Nav"
 import { Ad, AdJson } from "./components/Ad"
 import { IndexJson, PanelGroupSearch } from "./components/PanelGroupSearch"
 import { MembersJson, PanelMemberSearch } from "./components/PanelMemberSearch"
-import { Box, Link, Tab } from "@mui/material"
+import { Box, Tab } from "@mui/material"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import PersonIcon from '@mui/icons-material/Person'
 import GroupsIcon from '@mui/icons-material/Groups'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -36,9 +36,6 @@ export default function Content({ recentEvents }: { recentEvents: RecentEvent[] 
         <>
             <div className="container mx-auto bg-white">
                 <Nav setSearch={setSearch} />
-                <Link href={'http://eplus.jp/airattic/'} target="_blank" rel="noopener noreferrer" display={'flex'} justifyContent={'center'}>
-                    <img src="/ad/airattic.tokyo20241116.png" alt="airattic.tokyo" width={770} height={270} />
-                </Link>
                 <Ad json={adJson} />
                 <Box>
                     <TabContext value={tab}>
