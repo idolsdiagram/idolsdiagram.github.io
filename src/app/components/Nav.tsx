@@ -60,7 +60,7 @@ export function Nav({ setSearch, name }: { setSearch: ((search: string) => void)
             <>
                 <div className="flex items-center flex-row box-decoration-clone bg-gradient-to-r from-indigo-600 to-pink-500 h-14 p-2">
                     <div className="flex-none pr-2 text-center text-white font-bold leading-none"><a href="/">IDOLS<br />DIAGRAM</a></div>
-                    <div className="grow relative"></div>
+                    <div className="grow relative" />
                     <div className="flex-none pl-2">
                         <Button onClick={openModal} sx={{ p: 0, minWidth: 24 }}>
                             <EditNoteIcon className="text-white" />
@@ -289,41 +289,40 @@ function ReportModal(
 
         if (errors.length > 0) {
             setOnemanOkMessage('')
-            setOnemanErrorMessage('※' + errors.join('、') + 'を入力してください。')
+            setOnemanErrorMessage(`※${errors.join('、')}を入力してください。`)
             return
+        }
+        setOnemanOkMessage('')
+        setOnemanErrorMessage('')
+        // 送信処理
+        const formData = new FormData()
+        formData.append('entry.18344830', onemanGroupName) // グループ名
+        formData.append('entry.1143312203', onemanTitle) // イベントタイトル
+        formData.append('entry.1850468250', onemanVenue) // 会場名
+        formData.append('entry.149250323', onemanDate) // 開催日
+        formData.append('entry.1280716583', onemanTime) // 開演時刻
+        formData.append('entry.1289997855', onemanUrl) // 参考URL
+        if (process.env.NEXT_PUBLIC_ONEMAN_FORM === undefined) {
+            setOnemanErrorMessage('※送信に失敗しました')
         } else {
-            setOnemanOkMessage('')
-            setOnemanErrorMessage('')
-            // 送信処理
-            const formData = new FormData()
-            formData.append('entry.18344830', onemanGroupName) // グループ名
-            formData.append('entry.1143312203', onemanTitle) // イベントタイトル
-            formData.append('entry.1850468250', onemanVenue) // 会場名
-            formData.append('entry.149250323', onemanDate) // 開催日
-            formData.append('entry.1280716583', onemanTime) // 開演時刻
-            formData.append('entry.1289997855', onemanUrl) // 参考URL
-            if (process.env.NEXT_PUBLIC_ONEMAN_FORM === undefined) {
+            fetch(
+                process.env.NEXT_PUBLIC_ONEMAN_FORM,
+                {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData,
+                }
+            ).then((res) => {
+                setOnemanGroupName('')
+                setOnemanTitle('')
+                setOnemanVenue('')
+                setOnemanDate('')
+                setOnemanTime('')
+                setOnemanUrl('')
+                setOnemanOkMessage('※送信しました')
+            }).catch((error) => {
                 setOnemanErrorMessage('※送信に失敗しました')
-            } else {
-                fetch(
-                    process.env.NEXT_PUBLIC_ONEMAN_FORM,
-                    {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        body: formData,
-                    }
-                ).then((res) => {
-                    setOnemanGroupName('')
-                    setOnemanTitle('')
-                    setOnemanVenue('')
-                    setOnemanDate('')
-                    setOnemanTime('')
-                    setOnemanUrl('')
-                    setOnemanOkMessage('※送信しました')
-                }).catch((error) => {
-                    setOnemanErrorMessage('※送信に失敗しました')
-                })
-            }
+            })
         }
     }
 
@@ -366,9 +365,9 @@ function ReportModal(
             setDiagramOkMessage('')
             const errorMessage = ((errors: string[]) => {
                 let result = '※'
-                const _errors = errors.filter(v => v != '参考URL')
+                const _errors = errors.filter(v => v !== '参考URL')
                 if (_errors.length > 0) {
-                    result += _errors.join('、') + 'を入力してください。'
+                    result += `${_errors.join('、')}を入力してください。`
                 }
                 if (errors.includes('参考URL')) {
                     result += '参考URLの形式が正しくありません。'
@@ -377,33 +376,32 @@ function ReportModal(
             })(errors)
             setDiagramErrorMessage(errorMessage)
             return
+        }
+        setDiagramOkMessage('')
+        setDiagramErrorMessage('')
+        const formData = new FormData()
+        formData.append('entry.1564804804', diagramGroupName) // グループ名
+        formData.append('entry.1444084372', diagramContent) // 内容
+        formData.append('entry.1227477358', diagramUrl) // 参考URL
+        formData.append('entry.1639430889', pageUrl) // ページURL
+        if (process.env.NEXT_PUBLIC_DIAGRAM_FORM === undefined) {
+            setOnemanErrorMessage('※送信に失敗しました')
         } else {
-            setDiagramOkMessage('')
-            setDiagramErrorMessage('')
-            const formData = new FormData()
-            formData.append('entry.1564804804', diagramGroupName) // グループ名
-            formData.append('entry.1444084372', diagramContent) // 内容
-            formData.append('entry.1227477358', diagramUrl) // 参考URL
-            formData.append('entry.1639430889', pageUrl) // ページURL
-            if (process.env.NEXT_PUBLIC_DIAGRAM_FORM === undefined) {
-                setOnemanErrorMessage('※送信に失敗しました')
-            } else {
-                fetch(
-                    process.env.NEXT_PUBLIC_DIAGRAM_FORM,
-                    {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        body: formData,
-                    }
-                ).then((res) => {
-                    setDiagramGroupName('')
-                    setDiagramContent('')
-                    setDiagramUrl('')
-                    setDiagramOkMessage('※送信しました')
-                }).catch((error) => {
-                    setDiagramErrorMessage('※送信に失敗しました')
-                })
-            }
+            fetch(
+                process.env.NEXT_PUBLIC_DIAGRAM_FORM,
+                {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData,
+                }
+            ).then((res) => {
+                setDiagramGroupName('')
+                setDiagramContent('')
+                setDiagramUrl('')
+                setDiagramOkMessage('※送信しました')
+            }).catch((error) => {
+                setDiagramErrorMessage('※送信に失敗しました')
+            })
         }
     }
 
@@ -424,7 +422,7 @@ function ReportModal(
                     </Box>
                     <TabPanel value="0" sx={{ px: 2, py: 1 }}>
                         <Typography variant='subtitle1'>ワンマン・単独公演情報</Typography>
-                        <Typography variant='caption'></Typography>
+                        <Typography variant='caption' />
                         <div className='text-green-500 text-xs'>{onemanOkMessage}</div>
                         <div className='text-red-500 text-xs'>{onemanErrorMessage}</div>
                         {/* <Autocomplete

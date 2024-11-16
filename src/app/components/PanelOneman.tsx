@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import { RecentEvent } from "../page"
+import type { RecentEvent } from "../page"
 import Event from './Event'
 
 /**
@@ -22,6 +22,7 @@ export function PanelOneman({ events, search }: { events: RecentEvent[], search:
             {filteredEvents.map((event, index, arr) => {
                 return (
                     <>
+                        {/* biome-ignore lint/correctness/useJsxKeyInIterable: <explanation> */}
                         <Event event={event} index={index} events={arr} />
                     </>
                 )

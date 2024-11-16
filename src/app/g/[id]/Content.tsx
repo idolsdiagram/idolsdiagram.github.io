@@ -1,8 +1,8 @@
 'use client'
 
-import { Ad, AdJson } from "@/app/components/Ad"
+import { Ad, type AdJson } from "@/app/components/Ad"
 import { Nav } from "@/app/components/Nav"
-import { EventLabels, IndexJson } from "@/app/components/PanelGroupSearch"
+import { EventLabels, type IndexJson } from "@/app/components/PanelGroupSearch"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { Box, Grid, Stack, Switch, Tab, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
@@ -10,7 +10,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import { RelatedMenu } from "./RelatedMenu"
 import { PanelOneman } from "./components/PanelOneman"
-import { RecentEvent } from "@/app/page"
+import type { RecentEvent } from "@/app/page"
 import { decodeBase64 } from "../../components/Base64"
 
 /**

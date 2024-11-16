@@ -1,4 +1,4 @@
-import { RecentEvent } from "../page"
+import type { RecentEvent } from "../page"
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 
 /**

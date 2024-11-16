@@ -1,4 +1,4 @@
-import { RecentEvent } from "@/app/page"
+import type { RecentEvent } from "@/app/page"
 import dayjs from "dayjs"
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { Card } from "@mui/material"
@@ -79,6 +79,7 @@ export function PanelOneman({ id, events }: { id: string, events: RecentEvent[] 
             {events.map((event, index, arr) => {
                 return (
                     <>
+                        {/* biome-ignore lint/correctness/useJsxKeyInIterable: <explanation> */}
                         <Event event={event} index={index} events={arr} />
                     </>
                 )
@@ -171,8 +172,8 @@ function LabelFontSize(number: number) {
 }
 
 function FillYear(data: { year: string, cp: number }[]) {
-    const minYear = Math.min(...data.map(element => parseInt(element.year, 10)))
-    const maxYear = Math.max(...data.map(element => parseInt(element.year, 10)))
+    const minYear = Math.min(...data.map(element => Number.parseInt(element.year, 10)))
+    const maxYear = Math.max(...data.map(element => Number.parseInt(element.year, 10)))
     for (let year = minYear; year <= maxYear; year++) {
         if (!data.find(element => element.year === year.toString())) {
             data.push({ year: year.toString(), cp: 0 })
@@ -185,13 +186,11 @@ function FillYear(data: { year: string, cp: number }[]) {
 
 function RoundNumberToLocalString(number: number) {
     if (String(number).length > 9) {
-        return (Math.floor(number / 100000000) / 10).toLocaleString() + "G"
+        return `${(Math.floor(number / 100000000) / 10).toLocaleString()}G`
     }
     if (String(number).length > 6) {
-        return (Math.floor(number / 100000) / 10).toLocaleString() + "M"
+        return `${(Math.floor(number / 100000) / 10).toLocaleString()}M`
     }
-    return number.toLocaleString()
-    return String(number).length > 6 ? (Math.floor(number / 100000) / 10).toLocaleString() + "M" : number.toLocaleString()
     return number.toLocaleString()
 }
 

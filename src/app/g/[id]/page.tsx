@@ -1,6 +1,6 @@
-import { IndexJson } from "@/app/components/PanelGroupSearch"
+import type { IndexJson } from "@/app/components/PanelGroupSearch"
 import { Content } from "./Content"
-import { OnemanJson } from "@/app/page"
+import type { OnemanJson } from "@/app/page"
 import dayjs from "dayjs"
 import { decodeBase64, encodeBase64 } from "@/app/components/Base64"
 
@@ -68,7 +68,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             date: dayjs(value[4]).format('YYYY年M月D日'),
             start: value[5].replace(/:\d+$/, ''),
             url: value[6],
-            cp: value[8] ? parseInt(value[8], 10) : 0,
+            cp: value[8] ? Number.parseInt(value[8], 10) : 0,
         }
     })
     return (

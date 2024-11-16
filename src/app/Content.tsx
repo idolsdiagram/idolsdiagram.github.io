@@ -1,16 +1,16 @@
 'use client'
 
 import { Nav } from "./components/Nav"
-import { Ad, AdJson } from "./components/Ad"
-import { IndexJson, PanelGroupSearch } from "./components/PanelGroupSearch"
-import { MembersJson, PanelMemberSearch } from "./components/PanelMemberSearch"
+import { Ad, type AdJson } from "./components/Ad"
+import { type IndexJson, PanelGroupSearch } from "./components/PanelGroupSearch"
+import { type MembersJson, PanelMemberSearch } from "./components/PanelMemberSearch"
 import { Box, Tab } from "@mui/material"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { useEffect, useState } from "react"
 import PersonIcon from '@mui/icons-material/Person'
 import GroupsIcon from '@mui/icons-material/Groups'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { RecentEvent } from "./page"
+import type { RecentEvent } from "./page"
 import { PanelOneman } from "./components/PanelOneman"
 
 /**

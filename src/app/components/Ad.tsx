@@ -28,7 +28,7 @@ export function Ad({ json, name }: { json: AdJson[], name?: string }) {
     const [play, setPlay] = useState(false)
 
     useMemo(() => {
-        if (json.length == 0) {
+        if (json.length === 0) {
             return
         }
         setAds(json)
@@ -79,6 +79,7 @@ function Banner({ ad, play, setPlay }: { ad: AdItem, play: boolean, setPlay: (pl
     return (
         <>
             <div className="flex justify-center items-center p-2">
+                {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                 <img src={bannerImage} className="cursor-pointer" alt="広告" onClick={bannerClick} />
             </div>
         </>
@@ -95,12 +96,12 @@ function Video({ ad, play }: { ad: AdItem, play: boolean }) {
             return
         }
         if (window.innerWidth < 640) {
-            if (window.navigator.userAgent.toLocaleLowerCase().indexOf('firefox') == -1) {
+            if (window.navigator.userAgent.toLocaleLowerCase().indexOf('firefox') === -1) {
                 qtRef.current?.setAttribute('src', ad.video['4x3'].mov)
             }
             webmRef.current?.setAttribute('src', ad.video['4x3'].webm)
         } else {
-            if (window.navigator.userAgent.toLocaleLowerCase().indexOf('firefox') == -1) {
+            if (window.navigator.userAgent.toLocaleLowerCase().indexOf('firefox') === -1) {
                 qtRef.current?.setAttribute('src', ad.video['16x9'].mov)
             }
             webmRef.current?.setAttribute('src', ad.video['16x9'].webm)

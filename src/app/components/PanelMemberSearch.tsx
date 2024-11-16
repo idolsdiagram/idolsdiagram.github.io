@@ -65,8 +65,9 @@ export function PanelMemberSearch({ json, search }: { json: MembersJson, search:
             <ul>
                 {keys.map((key, index) => {
                     return (
-                        <li className="pt-2 text-blue-600 hover:text-blue-800" key={index}>
-                            <a href={'/g/' + encodeBase64(key.group)} key={index}>{key.name} ({key.group})</a>
+                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+                        <li className="pt-2 text-blue-600 hover:text-blue-800">
+                            <a href={`/g/${encodeBase64(key.group)}`}>{key.name} ({key.group})</a>
                         </li>
                     )
                 })}

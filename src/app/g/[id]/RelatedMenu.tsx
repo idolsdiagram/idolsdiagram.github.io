@@ -1,6 +1,6 @@
 'use client'
 
-import { IndexJson } from "@/app/components/PanelGroupSearch"
+import type { IndexJson } from "@/app/components/PanelGroupSearch"
 import { Button, Menu, MenuItem } from "@mui/material"
 import { useRef, useState } from "react"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';

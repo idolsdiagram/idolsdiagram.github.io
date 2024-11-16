@@ -34,9 +34,8 @@ export function PanelGroupSearch({ json, search }: { json: IndexJson, search: st
         setKeys(Object.keys(json.data).filter((key) => {
             if (filter === "") {
                 return key.toLowerCase().includes(search)
-            } else {
-                return key.toLowerCase().includes(search) && json.event[filter] && json.event[filter].data.includes(key)
             }
+            return key.toLowerCase().includes(search) && json.event[filter] && json.event[filter].data.includes(key)
         }))
     }, [json, search, filter])
 
@@ -62,17 +61,16 @@ export function PanelGroupSearch({ json, search }: { json: IndexJson, search: st
                     if (Array.isArray(json.data[key])) {
                         return (
                             <li className="pt-2 text-blue-600 hover:text-blue-800" key={key}>
-                                <a href={'/g/' + encodeBase64(key)}>{key}</a>
+                                <a href={`/g/${encodeBase64(key)}`}>{key}</a>
                                 <EventLabels json={json.event} name={key} />
                             </li>
                         )
-                    } else {
-                        return (
-                            <li className="pt-2 text-blue-600 hover:text-blue-800" key={key}>
-                                <a href={'/g/' + encodeBase64(json.data[key].toString())} key={key}>{key}</a>
-                            </li>
-                        )
                     }
+                    return (
+                        <li className="pt-2 text-blue-600 hover:text-blue-800" key={key}>
+                            <a href={`/g/${encodeBase64(json.data[key].toString())}`} key={key}>{key}</a>
+                        </li>
+                    )
                 })}
             </ul>
         </>

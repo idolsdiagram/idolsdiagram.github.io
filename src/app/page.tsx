@@ -87,7 +87,7 @@ export default async function Page() {
             date: dayjs(value[4]).format('YYYY年M月D日'),
             start: value[5].replace(/:\d+$/, ''),
             url: value[6],
-            cp: value[8] ? parseInt(value[8], 10) : 0,
+            cp: value[8] ? Number.parseInt(value[8], 10) : 0,
         }
     })
 
