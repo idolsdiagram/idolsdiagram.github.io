@@ -1,6 +1,6 @@
 import type { IndexJson } from "@/app/components/PanelGroupSearch"
 import { Content } from "./Content"
-import type { OnemanJson, RecentEvent } from "@/app/page"
+import { fetchJson, type OnemanJson, type RecentEvent } from "@/app/page"
 import dayjs from "dayjs"
 import { decodeBase64, encodeBase64 } from "@/app/components/Base64"
 
@@ -43,9 +43,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         ],
     }
     // フォームからの入力を取得
-    const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
+    // const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
+    const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await fetchJson(process.env.ONEMAN_JSON_URL) : undefined
     // 手入力分を取得
-    const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 10 } })).json() : undefined
+    // const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 10 } })).json() : undefined
+    const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await fetchJson(process.env.ONEMAN_JSON_URL2) : undefined
     let events:RecentEvent[] = []
     if (!onemanJson || !onemanJson.values) {
         events = []
