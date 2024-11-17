@@ -63,7 +63,7 @@ export default async function Page() {
     const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
     // 手入力分を取得
     const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 10 } })).json() : undefined
-    if (!onemanJson || !onemanJson.values) {
+    if (!onemanJson) {
         return <></>
     }
     // 手入力分を追加
