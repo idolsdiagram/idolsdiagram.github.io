@@ -55,6 +55,11 @@ export const metadata = {
     },
 }
 
+/**
+ * JSONを取得
+ * @param url URL
+ * @returns JSON
+ */
 export async function fetchJson(url: string) {
     try {
         const response = await fetch(url, { next: { revalidate: 600 } });
