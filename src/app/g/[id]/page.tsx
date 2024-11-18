@@ -43,11 +43,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         ],
     }
     // フォームからの入力を取得
-    // const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 10 } })).json() : undefined
-    const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await fetchJson(process.env.ONEMAN_JSON_URL) : undefined
+    const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await (await fetch(process.env.ONEMAN_JSON_URL, { next: { revalidate: 600 } })).json() : undefined
+    // const onemanJson: OnemanJson = process.env.ONEMAN_JSON_URL ? await fetchJson(process.env.ONEMAN_JSON_URL) : undefined
     // 手入力分を取得
-    // const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 10 } })).json() : undefined
-    const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await fetchJson(process.env.ONEMAN_JSON_URL2) : undefined
+    const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await (await fetch(process.env.ONEMAN_JSON_URL2, { next: { revalidate: 600 } })).json() : undefined
+    // const onemanJson2: OnemanJson = process.env.ONEMAN_JSON_URL2 ? await fetchJson(process.env.ONEMAN_JSON_URL2) : undefined
     let events:RecentEvent[] = []
     if (!onemanJson || !onemanJson.values) {
         events = []
