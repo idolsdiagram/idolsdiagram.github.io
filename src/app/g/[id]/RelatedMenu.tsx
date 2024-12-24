@@ -28,7 +28,9 @@ export function RelatedMenu({ json, name }: { json: IndexJson, name: string }) {
     }
     const locationRedirect = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         const target = event.target as HTMLLIElement
-        window.location.href = `/g/${encodeBase64(target.innerText.replace(/\r?\n/g, ''))}`
+        if (target.textContent) {
+            window.location.href = `/g/${encodeBase64(target.textContent.replace(/\r?\n/g, ''))}`
+        }
     }
     return (
         <>
