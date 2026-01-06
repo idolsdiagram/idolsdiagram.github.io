@@ -1,9 +1,22 @@
-name: Astro Development Build Test
+name: Astro Build
 
 on:
   push:
     branches:
       - astro
+  schedule:
+    - cron: "0 15 * * *" # Daily at 00:15 JST
+    - cron: "55 2 * * *" # Daily at 11:55 JST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: astro-build
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -21,9 +34,6 @@ jobs:
       MEMBER_JSON_URL: ${{ secrets.MEMBER_JSON_URL }}
       SITE_URL: ${{ secrets.SITE_URL }}
       SPOTIFY_JSON_URL: ${{ secrets.SPOTIFY_JSON_URL }}
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -46,8 +56,18 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: astro-dist
           path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
