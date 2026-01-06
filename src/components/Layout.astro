@@ -9,6 +9,37 @@ const { title }: { title?: string } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <meta name="viewport" content="width=device-width" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="IDOLS DIAGRAM [アイドル相関図]" />
+    <meta
+      property="og:title"
+      content={title
+        ? `${title} | IDOLS DIAGRAM`
+        : "IDOLS DIAGRAM [アイドル相関図]"}
+    />
+    <meta property="og:description" content={import.meta.env.OG_DESCRIPTION} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta
+      property="og:image"
+      content={title
+        ? `${import.meta.env.OG_IMAGE_DOMAIN}/images_s/${encodeURIComponent(title)}.png`
+        : `${import.meta.env.OG_IMAGE_DOMAIN}/og.png`}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content={title
+        ? `${title} | IDOLS DIAGRAM`
+        : "IDOLS DIAGRAM [アイドル相関図]"}
+    />
+    <meta name="twitter:description" content={import.meta.env.OG_DESCRIPTION} />
+    <meta
+      name="twitter:image"
+      content={title
+        ? `${import.meta.env.OG_IMAGE_DOMAIN}/images_s/${encodeURIComponent(title)}.png`
+        : `${import.meta.env.OG_IMAGE_DOMAIN}/og.png`}
+    />
+    <meta name="description" content={import.meta.env.OG_DESCRIPTION} />
     <title>IDOLS DIAGRAM{title ? ` | ${title}` : ""}</title>
   </head>
   <body class="dark">
