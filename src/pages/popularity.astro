@@ -1,0 +1,38 @@
+---
+import Layout from "../components/Layout.astro";
+import Nav from "../components/Nav.astro";
+import { artistDailyJson } from "../lib/ArtistDailyJson";
+import { encode } from "../lib/encode";
+import { groupJson } from "../lib/GroupJson";
+const artists = artistDailyJson
+  .filter((artist) => artist.popularity > 0)
+  .filter((artist) => groupJson.data[artist.key] !== undefined);
+---
+
+<Layout>
+  <Nav />
+  <main class="responsive">
+    <table>
+      <thead>
+        <tr>
+          <th class="center-align">Artist</th>
+          <th class="center-align">Spotify Popularity</th>
+          <th class="center-align">Spotify Followers</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          artists.map((artist) => (
+            <tr>
+              <td>
+                <a href={`/g/${encode(artist.key)}`}>{artist.key}</a>
+              </td>
+              <td class="center-align">{artist.popularity}</td>
+              <td class="right-align">{artist.followers.toLocaleString()}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </main>
+</Layout>

@@ -1,0 +1,36 @@
+---
+import "material-dynamic-colors";
+const { title }: { title?: string } = Astro.props;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <title>IDOLS DIAGRAM{title ? ` | ${title}` : ""}</title>
+  </head>
+  <body class="dark">
+    <slot />
+    <script>
+      import "beercss";
+    </script>
+    <script
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.GA_MEASUREMENT_ID}`}
+      is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", `${import.meta.env.GA_MEASUREMENT_ID}`);
+    </script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3746158105867064"
+      crossorigin="anonymous"
+      is:inline></script>
+  </body>
+</html>

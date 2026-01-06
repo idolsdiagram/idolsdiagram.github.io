@@ -1,0 +1,42 @@
+---
+const { data } = Astro.props;
+---
+
+{
+  data && (
+    <>
+      <article class="no-padding top-margin">
+        <iframe
+          style="border-radius:12px"
+          src={`https://open.spotify.com/embed/artist/${data.id}?utm_source=generator`}
+          width="100%"
+          height="352"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        />
+        {/*
+      <div class="right-align small-padding">
+        <span class="padding tiny-padding">Popularity</span>
+        <div class="badge none primary">{data.popularity}</div>
+        <span class="padding tiny-padding">Followers</span>
+        <div class="badge none primary">{data.followers.toLocaleString()}</div>
+      </div>
+      */}
+      </article>
+      <div class="top-margin right-align">
+        <button class="chip">
+          <span>Popularity</span>
+          <div class="badge none primary">{data.popularity}</div>
+        </button>
+        <button class="chip no-margin">
+          <span>Followers</span>
+          <div class="badge none primary">
+            {data.followers.toLocaleString()}
+          </div>
+        </button>
+      </div>
+    </>
+  )
+}

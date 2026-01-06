@@ -1,0 +1,52 @@
+name: Astro Development Build Test
+
+on:
+  push:
+    branches:
+      - astro
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: astro
+    env:
+      S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+      S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+      S3_REGION: ${{ secrets.S3_REGION }}
+      S3_BUCKET_INDEX: ${{ secrets.S3_BUCKET_INDEX }}
+      S3_BUCKET_SPOTIFY: ${{ secrets.S3_BUCKET_SPOTIFY }}
+      GOOGLE_FORMS_WEBHOOK_URL: ${{ secrets.GOOGLE_FORMS_WEBHOOK_URL}}
+      GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+      GROUP_JSON_URL: ${{ secrets.GROUP_JSON_URL }}
+      MEMBER_JSON_URL: ${{ secrets.MEMBER_JSON_URL }}
+      SPOTIFY_JSON_URL: ${{ secrets.SPOTIFY_JSON_URL }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-dist
+          path: ./dist

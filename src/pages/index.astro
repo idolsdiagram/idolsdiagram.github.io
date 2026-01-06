@@ -1,0 +1,41 @@
+---
+import Layout from "../components/Layout.astro";
+import Nav from "../components/Nav.astro";
+import { SearchableGroupList } from "../components/SearchableGroupList";
+import { encode } from "../lib/encode";
+import { groupJson } from "../lib/GroupJson";
+import { memberJson } from "../lib/MemberJson";
+
+const items = Object.entries(groupJson.data).map(([key, value]) => {
+  return {
+    name: key,
+    href: Array.isArray(value) ? encode(key) : encode(value),
+  };
+});
+// console.log(memberJson);
+const members: { name: string; groupName: string; href: string }[] =
+  Object.entries(memberJson).flatMap(([key, value]) => {
+    if (Array.isArray(value)) {
+      return value
+        .filter((member) => member.type === "member")
+        .map((member) => ({
+          name: member.name,
+          groupName: key,
+          href: `/g/${encode(key)}`,
+        }));
+    }
+    return [];
+  });
+---
+
+<Layout>
+  <Nav />
+  <main class="">
+    <SearchableGroupList
+      items={items}
+      members={members}
+      events={groupJson.event}
+      client:load
+    />
+  </main>
+</Layout>

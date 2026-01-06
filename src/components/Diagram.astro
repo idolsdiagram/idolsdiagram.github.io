@@ -1,0 +1,76 @@
+---
+import { decode } from "../lib/decode";
+import { encode } from "../lib/encode";
+
+const { id, related = [] } = Astro.props as { id: string; related: string[] };
+---
+
+<article class="small-round tiny-padding top-margin">
+  <!-- <nav class="tabbed small">
+    <a class="active"><i>expand</i><span>Large</span></a>
+    <a><i>compress</i><span>Small</span></a>
+  </nav> -->
+  <nav>
+    <div class="middle-align max">
+      <label class="switch icon">
+        <input type="checkbox" id="expand-compress-toggle" checked />
+        <span>
+          <i>expand</i>
+          <i>compress</i>
+        </span>
+      </label>
+    </div>
+    <div class="no-padding">
+      <button class="chip no-margin">
+        <span>関連項目</span>
+        <i>arrow_drop_down</i>
+        <menu class="border left no-wrap">
+          {
+            related.map((item) => (
+              <li>
+                <a href={`/g/${encode(item)}`}>{item}</a>
+              </li>
+            ))
+          }
+        </menu>
+      </button>
+    </div>
+  </nav>
+  <!-- <label class="checkbox icon margin absolute right top">
+    <input type="checkbox" id="expand-compress-toggle" />
+    <span>
+      <i style="color:#000">expand</i>
+      <i style="color:#000">compress</i>
+    </span>
+  </label> -->
+</article>
+<article class="small-round no-padding">
+  <img
+    src=`https://d3uyg5l5xqk73p.cloudfront.net/svg_s/${encodeURIComponent(decode(id))}.svg`
+    width="100%"
+    alt={decode(id)}
+    style="display: block;"
+    id="small-diagram"
+  />
+  <img
+    src=`https://d3uyg5l5xqk73p.cloudfront.net/svg/${encodeURIComponent(decode(id))}.svg`
+    width="100%"
+    alt={decode(id)}
+    style="display: none;"
+    id="large-diagram"
+  />
+</article>
+<script type="module">
+  const toggle = document.getElementById("expand-compress-toggle");
+  const small = document.getElementById("small-diagram");
+  const large = document.getElementById("large-diagram");
+  toggle?.addEventListener("change", () => {
+    if (toggle.checked) {
+      small.style.display = "block";
+      large.style.display = "none";
+    } else {
+      small.style.display = "none";
+      large.style.display = "block";
+    }
+  });
+</script>

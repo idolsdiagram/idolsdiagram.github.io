@@ -1,0 +1,209 @@
+---
+const { id }: { id?: string } = Astro.props;
+const form_url = import.meta.env.GOOGLE_FORMS_WEBHOOK_URL || "";
+---
+
+<header class="s row">
+  <div class="absolute center middle bold center-align no-line">
+    <a href="/">IDOLS<br />DIAGRAM</a>
+  </div>
+</header>
+<nav class="s bottom">
+  <a href="/"><i>search</i><div>検索</div></a>
+  <a href="/popularity"><i>star</i><div>人気</div></a>
+  <!-- <a><i>share</i><div>共有</div></a> -->
+  <a data-ui="#post_dialog"><i>edit_note</i><div>投稿</div></a>
+</nav>
+<nav class="m l left">
+  <div class="bold center-align no-line">
+    IDOLS<br />DIAGRAM
+  </div>
+  <a href="/"><i>search</i><div>検索</div></a>
+  <a href="/popularity"><i>star</i><div>人気</div></a>
+  <!-- <a><i>share</i><div>共有</div></a> -->
+  <a data-ui="#post_dialog"><i>edit_note</i><div>投稿</div></a>
+</nav>
+<dialog class="right medium" id="post_dialog" data-url={form_url}>
+  <fieldset>
+    <legend>記載されている情報について</legend>
+    <span>随時修正依頼を受け付けております。</span>
+    <div class="field border label" id="group_field">
+      <input name="group_name" value={id} />
+      <label>グループ名</label>
+      <span class="error"></span>
+    </div>
+    <div class="field textarea border extra label" id="content_field">
+      <textarea name="content"></textarea>
+      <label>内容</label>
+      <span class="error"></span>
+    </div>
+    <div class="field border label" id="url_field">
+      <input name="url" type="url" />
+      <label>参考URL</label>
+      <span class="error"></span>
+    </div>
+    <nav>
+      <div class="max">
+        <button class="border no-margin primary" id="post_dialog_submit_btn"
+          >送信</button
+        >
+      </div>
+      <div>
+        <button class="border no-margin" data-ui="#post_dialog">閉じる</button>
+      </div>
+    </nav>
+  </fieldset>
+  <div class="snackbar top primary" id="snackbar_success">
+    送信が完了しました。ご協力ありがとうございます！
+  </div>
+  <div class="snackbar top error" id="snackbar_error">
+    送信中にエラーが発生しました。時間をおいて再度お試しください。
+  </div>
+</dialog>
+<script type="module">
+  /**
+   * フォーム要素を取得
+   */
+  function getFormElements() {
+    const dialog = document.getElementById("post_dialog");
+    return {
+      dialog,
+      url: dialog.getAttribute("data-url"),
+      groupInput: dialog.querySelector("input[name='group_name']"),
+      groupError: dialog.querySelector("#group_field .error"),
+      contentInput: dialog.querySelector("textarea[name='content']"),
+      contentError: dialog.querySelector("#content_field .error"),
+      urlInput: dialog.querySelector("input[name='url']"),
+      urlError: dialog.querySelector("#url_field .error"),
+      snackbarSuccess: document.getElementById("snackbar_success"),
+      snackbarError: document.getElementById("snackbar_error"),
+    };
+  }
+
+  /**
+   * バリデーション実行
+   */
+  function validateForm(elements) {
+    let hasError = false;
+    const {
+      groupInput,
+      groupError,
+      contentInput,
+      contentError,
+      urlInput,
+      urlError,
+    } = elements;
+
+    // グループ名のバリデーション
+    if (groupInput.value.trim() === "") {
+      groupError.textContent = "グループ名を入力してください。";
+      groupInput.parentElement.classList.add("invalid");
+      hasError = true;
+    } else {
+      groupError.textContent = "";
+      groupInput.parentElement.classList.remove("invalid");
+    }
+
+    // 内容のバリデーション
+    if (contentInput.value.trim() === "") {
+      contentError.textContent = "内容を入力してください。";
+      contentInput.parentElement.classList.add("invalid");
+      hasError = true;
+    } else {
+      contentError.textContent = "";
+      contentInput.parentElement.classList.remove("invalid");
+    }
+
+    // URLのバリデーション
+    if (urlInput.value.trim() !== "") {
+      try {
+        new URL(urlInput.value.trim());
+        urlError.textContent = "";
+        urlInput.parentElement.classList.remove("invalid");
+      } catch {
+        urlError.textContent = "有効なURLを入力してください。";
+        urlInput.parentElement.classList.add("invalid");
+        hasError = true;
+      }
+    } else {
+      urlError.textContent = "";
+      urlInput.parentElement.classList.remove("invalid");
+    }
+
+    return !hasError;
+  }
+
+  /**
+   * フォーム入力を無効化/有効化
+   */
+  function setFormDisabled(elements, submitButton, disabled) {
+    elements.groupInput.disabled = disabled;
+    elements.contentInput.disabled = disabled;
+    elements.urlInput.disabled = disabled;
+    submitButton.disabled = disabled;
+  }
+
+  /**
+   * スナックバーを表示
+   */
+  function showSnackbar(snackbar, elements, submitButton) {
+    snackbar.classList.add("active");
+    setTimeout(() => {
+      snackbar.classList.remove("active");
+      setFormDisabled(elements, submitButton, false);
+    }, 5000);
+  }
+
+  /**
+   * フォームデータを送信
+   */
+  async function submitForm(elements, submitButton) {
+    const {
+      url,
+      groupInput,
+      contentInput,
+      urlInput,
+      snackbarSuccess,
+      snackbarError,
+    } = elements;
+
+    const formData = new FormData();
+    formData.append("entry.1564804804", groupInput.value.trim());
+    formData.append("entry.1444084372", contentInput.value.trim());
+    formData.append("entry.1227477358", urlInput.value.trim());
+
+    try {
+      await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      });
+      showSnackbar(snackbarSuccess, elements, submitButton);
+    } catch (error) {
+      showSnackbar(snackbarError, elements, submitButton);
+    }
+  }
+
+  /**
+   * 送信ボタンのクリックハンドラ
+   */
+  async function handleSubmit(e) {
+    const elements = getFormElements();
+
+    // バリデーション
+    if (!validateForm(elements)) {
+      return;
+    }
+
+    // フォームを無効化
+    setFormDisabled(elements, e.target, true);
+
+    // 送信
+    await submitForm(elements, e.target);
+  }
+
+  // イベントリスナーを登録
+  document
+    .querySelector("#post_dialog_submit_btn")
+    .addEventListener("click", handleSubmit);
+</script>
