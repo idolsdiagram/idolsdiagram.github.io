@@ -51,13 +51,16 @@ const { title }: { title?: string } = Astro.props;
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.GA_MEASUREMENT_ID}`}
       is:inline></script>
-    <script is:inline>
+    <script
+      is:inline
+      define:vars={{ gaMeasurementId: import.meta.env.GA_MEASUREMENT_ID }}
+    >
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", `${import.meta.env.GA_MEASUREMENT_ID}`);
+      gtag("config", gaMeasurementId);
     </script>
     <script
       async
