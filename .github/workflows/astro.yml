@@ -3,7 +3,7 @@ name: Astro Build
 on:
   push:
     branches:
-      - astro
+      - main
   schedule:
     - cron: "0 15 * * *" # Daily at 00:15 JST
     - cron: "55 2 * * *" # Daily at 11:55 JST
