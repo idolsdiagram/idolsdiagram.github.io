@@ -37,7 +37,7 @@ const { title }: { title?: string } = Astro.props;
       name="twitter:image"
       content={title
         ? `${import.meta.env.OG_IMAGE_DOMAIN}/images_s/${encodeURIComponent(title)}.png`
-        : `${import.meta.env.OG_IMAGE_DOMAIN}/og.png`}
+        : `${import.meta.env.OG_IMAGE_DOMAIN}/twitter.png`}
     />
     <meta name="description" content={import.meta.env.OG_DESCRIPTION} />
     <title>IDOLS DIAGRAM{title ? ` | ${title}` : ""}</title>
