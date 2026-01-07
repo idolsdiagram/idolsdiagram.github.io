@@ -120,8 +120,8 @@ export function SearchableGroupList({ items, members, events }: {
 
     return (
         <>
-            <div>
-                <div className="max field prefix border fill round no-margin">
+            <div className="no-padding">
+                <div className="max field small prefix border fill round no-margin">
                     <i>search</i>
                     <input
                         type="text"
@@ -131,7 +131,7 @@ export function SearchableGroupList({ items, members, events }: {
                     <a onClick={(e) => setSearchInput("")}><i>close</i></a>
                 </div>
             </div>
-            <div className="tabs">
+            <div className="tabs tiny-margin">
                 <a data-ui="#page1" className="active"><i>groups</i>グループ検索</a>
                 <a data-ui="#page2"><i>person</i>メンバー検索</a>
             </div>

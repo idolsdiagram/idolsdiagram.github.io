@@ -3,9 +3,12 @@ const { id }: { id?: string } = Astro.props;
 const form_url = import.meta.env.GOOGLE_FORMS_WEBHOOK_URL || "";
 ---
 
-<header class="s row">
-  <div class="absolute center middle bold center-align no-line">
-    <a href="/">IDOLS<br />DIAGRAM</a>
+<header class="s row" style="min-block-size: 2.5rem;">
+  <div
+    class="absolute center middle bold center-align no-line"
+    style="font-size: 1rem;"
+  >
+    <a href="/">IDOLS DIAGRAM</a>
   </div>
 </header>
 <nav class="s bottom">

@@ -5,7 +5,7 @@ import { encode } from "../lib/encode";
 const { id, related = [] } = Astro.props as { id: string; related: string[] };
 ---
 
-<article class="small-round tiny-padding top-margin">
+<article class="small-round tiny-padding top-margin small-margin">
   <!-- <nav class="tabbed small">
     <a class="active"><i>expand</i><span>Large</span></a>
     <a><i>compress</i><span>Small</span></a>
@@ -44,7 +44,7 @@ const { id, related = [] } = Astro.props as { id: string; related: string[] };
     </span>
   </label> -->
 </article>
-<article class="small-round no-padding">
+<article class="small-round no-padding small-margin">
   <img
     src=`https://d3uyg5l5xqk73p.cloudfront.net/svg_s/${encodeURIComponent(decode(id))}.svg`
     width="100%"
