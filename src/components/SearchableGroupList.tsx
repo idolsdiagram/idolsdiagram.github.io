@@ -179,7 +179,7 @@ export function SearchableGroupList({ items, members, events }: {
                         </button>
                     </div>
                 </nav>
-                <article className="no-margin">
+                <article className="top-margin tiny-margin">
                     <div ref={containerRef1}>
                         <ul className="list" style={{ height: listHeight }}>
                             <Virtuoso
@@ -194,7 +194,7 @@ export function SearchableGroupList({ items, members, events }: {
                 </article>
             </div>
             <div className="page" id="page2">
-                <article>
+                <article className="top-margin small-margin">
                     <div ref={containerRef2}>
                         {debouncedSearchInput ? (
                             <ul className="list" style={{ height: listHeight }}>
