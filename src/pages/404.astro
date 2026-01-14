@@ -1,0 +1,52 @@
+---
+import Layout from "../components/Layout.astro";
+import Nav from "../components/Nav.astro";
+---
+
+<Layout title="404 Not Found">
+  <Nav />
+  <main class="center-align middle-align">
+    <div class="large-space"></div>
+    <div class="large-space"></div>
+    <div>
+      <h1 class="large-text">404</h1>
+      <h5 class="large-text">Page Not Found</h5>
+      <div class="space"></div>
+      <p class="medium-text">
+        The page you are looking for does not exist or may have been moved.
+      </p>
+    </div>
+    <div class="large-space"></div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 8rem;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 6rem;
+    }
+  }
+</style>
