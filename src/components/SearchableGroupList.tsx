@@ -72,8 +72,11 @@ export function SearchableGroupList({ items, members, events }: {
                 const bottomNavHeight = isSmallViewport ? 95 : 25;
 
                 const availableHeight = window.innerHeight - rect.top - bottomNavHeight;
-                // console.log({ availableHeight, isSmallViewport, bottomNavHeight });
-                setListHeight(`${availableHeight}px`);
+                // Adsenseなどで高さが圧迫された場合でも操作可能な最小高さを確保
+                const minHeight = 300;
+                const finalHeight = Math.max(availableHeight, minHeight);
+                // console.log({ availableHeight, finalHeight, isSmallViewport, bottomNavHeight });
+                setListHeight(`${finalHeight}px`);
             }
         };
 
