@@ -6,10 +6,6 @@ const { id, related = [] } = Astro.props as { id: string; related: string[] };
 ---
 
 <article class="small-round tiny-padding top-margin small-margin">
-  <!-- <nav class="tabbed small">
-    <a class="active"><i>expand</i><span>Large</span></a>
-    <a><i>compress</i><span>Small</span></a>
-  </nav> -->
   <nav>
     <div class="middle-align max">
       <label class="switch icon">
@@ -36,34 +32,62 @@ const { id, related = [] } = Astro.props as { id: string; related: string[] };
       </button>
     </div>
   </nav>
-  <!-- <label class="checkbox icon margin absolute right top">
-    <input type="checkbox" id="expand-compress-toggle" />
-    <span>
-      <i style="color:#000">expand</i>
-      <i style="color:#000">compress</i>
-    </span>
-  </label> -->
 </article>
 <article class="small-round no-padding small-margin">
   <img
     src=`https://d3uyg5l5xqk73p.cloudfront.net/svg_s/${encodeURIComponent(decode(id))}.svg`
     width="100%"
     alt={decode(id)}
-    style="display: block;"
+    style="display: block; cursor: pointer;"
     id="small-diagram"
   />
   <img
     src=`https://d3uyg5l5xqk73p.cloudfront.net/svg/${encodeURIComponent(decode(id))}.svg`
     width="100%"
     alt={decode(id)}
-    style="display: none;"
+    style="display: none; cursor: pointer;"
     id="large-diagram"
   />
 </article>
+
+<!-- ダイアログ -->
+<dialog id="diagram-dialog" class="max">
+  <nav class="right-align">
+    <div class="max row middle-align padding">
+      <div class="slider">
+        <input id="zoom-slider" type="range" value="0" step="0.02" />
+        <span></span>
+      </div>
+      <form method="dialog">
+        <button class="transparent circle" type="submit">
+          <i>close</i>
+        </button>
+      </form>
+    </div>
+  </nav>
+  <canvas id="diagram-canvas" class="max"></canvas>
+</dialog>
 <script type="module">
   const toggle = document.getElementById("expand-compress-toggle");
   const small = document.getElementById("small-diagram");
   const large = document.getElementById("large-diagram");
+  const dialog = document.getElementById("diagram-dialog");
+  const canvas = document.getElementById("diagram-canvas");
+  const ctx = canvas.getContext("2d");
+  const zoomSlider = document.getElementById("zoom-slider");
+  const zoomValue = document.getElementById("zoom-value");
+
+  // 変換用の変数
+  let scale = 1;
+  let offsetX = 0;
+  let offsetY = 0;
+  let isDragging = false;
+  let lastPanPoint = { x: 0, y: 0 };
+  let currentImage = null;
+  let minScale = 0.1;
+  let maxScale = 10;
+
+  // トグル機能
   toggle?.addEventListener("change", () => {
     if (toggle.checked) {
       small.style.display = "block";
@@ -71,6 +95,419 @@ const { id, related = [] } = Astro.props as { id: string; related: string[] };
     } else {
       small.style.display = "none";
       large.style.display = "block";
+    }
+  });
+
+  // 画像を描画する関数
+  function drawImage() {
+    if (!currentImage) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
+
+    // 画像を中央に配置
+    const x = (canvas.width / scale - currentImage.naturalWidth) / 2;
+    const y = (canvas.height / scale - currentImage.naturalHeight) / 2;
+    ctx.drawImage(currentImage, x, y);
+
+    ctx.restore();
+  }
+
+  // スライダーとズーム値表示を更新する関数
+  function updateSlider() {
+    if (zoomSlider) {
+      zoomSlider.value = scale;
+
+      // 親要素のCSS変数も更新
+      const sliderParent = zoomSlider.parentElement;
+      if (sliderParent && minScale && maxScale) {
+        // スケールの割合を計算（0%〜100%）
+        const percentage = ((scale - minScale) / (maxScale - minScale)) * 100;
+        sliderParent.style.setProperty("--_start", "0%");
+        sliderParent.style.setProperty("--_end", 100 - percentage + "%");
+        sliderParent.style.setProperty("--_value1", scale.toString());
+        sliderParent.style.setProperty("--_value2", "0");
+      }
+    }
+  }
+
+  // パン制限を適用する関数
+  function constrainPan() {
+    if (!currentImage) return;
+
+    // 画像の中央配置オフセット（変換前の座標系）
+    const imageOffsetX = (canvas.width / scale - currentImage.naturalWidth) / 2;
+    const imageOffsetY =
+      (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+    // 変換後の画像の実際の描画位置とサイズ
+    const imageStartX = offsetX + imageOffsetX * scale;
+    const imageStartY = offsetY + imageOffsetY * scale;
+    const scaledWidth = currentImage.naturalWidth * scale;
+    const scaledHeight = currentImage.naturalHeight * scale;
+
+    // 画像がcanvasより小さい場合は中央に固定
+    if (scaledWidth <= canvas.width) {
+      offsetX = (canvas.width - scaledWidth) / 2 - imageOffsetX * scale;
+    } else {
+      // 画像の左端がcanvasの左端より右にこないよう制限
+      const maxOffsetX = -imageOffsetX * scale;
+      // 画像の右端がcanvasの右端より左にこないよう制限
+      const minOffsetX = canvas.width - scaledWidth - imageOffsetX * scale;
+      offsetX = Math.max(minOffsetX, Math.min(maxOffsetX, offsetX));
+    }
+
+    if (scaledHeight <= canvas.height) {
+      offsetY = -imageOffsetY * scale; // 上詰め表示
+    } else {
+      // 画像の上端がcanvasの上端より下にこないよう制限
+      const maxOffsetY = -imageOffsetY * scale;
+      // 画像の下端がcanvasの下端より上にこないよう制限
+      const minOffsetY = canvas.height - scaledHeight - imageOffsetY * scale;
+      offsetY = Math.max(minOffsetY, Math.min(maxOffsetY, offsetY));
+    }
+  }
+
+  // 画像をcanvasに読み込む関数
+  function drawImageToCanvas(imageSrc) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+
+    img.onload = function () {
+      currentImage = img;
+
+      // ダイアログを先に表示してサイズを取得
+      dialog.showModal();
+
+      // ダイアログの実際のサイズを取得
+      const dialogRect = dialog.getBoundingClientRect();
+
+      // ナビゲーション部分の高さを除いたコンテンツ領域を計算
+      const navHeight = dialog.querySelector("nav")?.offsetHeight || 0;
+      const padding = 32; // ダイアログのパディング考慮
+
+      // キャンバスサイズをダイアログサイズに合わせて設定
+      const maxWidth = dialogRect.width - padding;
+      const maxHeight = dialogRect.height - navHeight - padding;
+
+      canvas.width = maxWidth;
+      canvas.height = maxHeight;
+
+      // 最小スケールを計算（コンテナサイズより小さくならない制限）
+      minScale = Math.min(
+        maxWidth / img.naturalWidth,
+        maxHeight / img.naturalHeight,
+      );
+
+      // 初期スケールを最小スケールに設定（左端の値）
+      scale = minScale;
+
+      // 画像の長辺から最大倍率を計算
+      const imageLongSide = Math.max(img.naturalWidth, img.naturalHeight);
+      const canvasShortSide = Math.min(maxWidth, maxHeight);
+
+      // 最大倍率を1.0倍に固定
+      maxScale = Math.max(1.5, minScale);
+      console.log("maxScale:", maxScale);
+
+      // スライダーの最小値を更新
+      if (zoomSlider) {
+        zoomSlider.min = minScale;
+        zoomSlider.max = maxScale;
+        zoomSlider.value = minScale; // 初期値を最小値に設定
+      }
+
+      offsetX = 0;
+      offsetY = 0;
+
+      constrainPan();
+      drawImage();
+      updateSlider();
+    };
+
+    // img.onerror = function () {
+    //   console.error("画像の読み込みに失敗しました:", imageSrc);
+    //   alert("画像の読み込みに失敗しました");
+    // };
+
+    img.src = imageSrc;
+  }
+
+  // マウス座標を取得
+  function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  }
+
+  // タッチ座標を取得
+  function getTouchPos(touch) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  }
+
+  // マウスホイールでズーム
+  canvas?.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const mousePos = getMousePos(e);
+    const zoomIntensity = 0.1;
+    const wheel = e.deltaY < 0 ? 1 : -1;
+    let zoomFactor = Math.exp(wheel * zoomIntensity);
+    let newScale = scale * zoomFactor;
+
+    // 最大値付近での特別処理
+    if (wheel > 0 && newScale > maxScale * 0.9 && newScale < maxScale) {
+      // 90%を超えている場合は次のステップで確実に最大値に到達
+      newScale = maxScale;
+    }
+
+    // ズーム制限
+    if (newScale >= minScale && newScale <= maxScale) {
+      // 画像の中央配置オフセットを計算
+      const imageOffsetX =
+        (canvas.width / scale - currentImage.naturalWidth) / 2;
+      const imageOffsetY =
+        (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+      // マウス位置のワールド座標を計算（中央配置オフセットを考慮）
+      const worldX = (mousePos.x - offsetX) / scale - imageOffsetX;
+      const worldY = (mousePos.y - offsetY) / scale - imageOffsetY;
+
+      // スケール更新
+      scale = newScale;
+
+      // 新しい画像オフセットを計算
+      const newImageOffsetX =
+        (canvas.width / scale - currentImage.naturalWidth) / 2;
+      const newImageOffsetY =
+        (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+      // 同じワールド座標がマウス位置に来るようにオフセット調整
+      offsetX = mousePos.x - (worldX + newImageOffsetX) * scale;
+      offsetY = mousePos.y - (worldY + newImageOffsetY) * scale;
+
+      constrainPan();
+      drawImage();
+      updateSlider();
+    }
+  });
+
+  // スライダーでズーム
+  zoomSlider?.addEventListener("input", (e) => {
+    const newScale = parseFloat(e.target.value);
+
+    // ズーム制限
+    if (newScale >= minScale && newScale <= maxScale) {
+      // 画像中央を基準にズーム
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // 画像の中央配置オフセットを計算
+      const imageOffsetX =
+        (canvas.width / scale - currentImage.naturalWidth) / 2;
+      const imageOffsetY =
+        (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+      // 中央のワールド座標を計算
+      const worldX = (centerX - offsetX) / scale - imageOffsetX;
+      const worldY = (centerY - offsetY) / scale - imageOffsetY;
+
+      // スケール更新
+      scale = newScale;
+
+      // 新しい画像オフセットを計算
+      const newImageOffsetX =
+        (canvas.width / scale - currentImage.naturalWidth) / 2;
+      const newImageOffsetY =
+        (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+      // 同じワールド座標が中央に来るようにオフセット調整
+      offsetX = centerX - (worldX + newImageOffsetX) * scale;
+      offsetY = centerY - (worldY + newImageOffsetY) * scale;
+
+      constrainPan();
+      drawImage();
+      updateSlider();
+    }
+  });
+
+  // マウスドラッグでパン
+  canvas?.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    lastPanPoint = getMousePos(e);
+    canvas.style.cursor = "grabbing";
+  });
+
+  canvas?.addEventListener("mousemove", (e) => {
+    if (isDragging) {
+      const mousePos = getMousePos(e);
+      offsetX += mousePos.x - lastPanPoint.x;
+      offsetY += mousePos.y - lastPanPoint.y;
+      lastPanPoint = mousePos;
+      constrainPan();
+      drawImage();
+      updateSlider();
+    }
+  });
+
+  canvas?.addEventListener("mouseup", () => {
+    isDragging = false;
+    canvas.style.cursor = "grab";
+  });
+
+  canvas?.addEventListener("mouseleave", () => {
+    isDragging = false;
+    canvas.style.cursor = "default";
+  });
+
+  // タッチイベント
+  let lastTouchDistance = 0;
+  let lastTouchCenter = { x: 0, y: 0 };
+
+  canvas?.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+
+    if (e.touches.length === 1) {
+      // シングルタッチ - パン開始
+      isDragging = true;
+      lastPanPoint = getTouchPos(e.touches[0]);
+    } else if (e.touches.length === 2) {
+      // マルチタッチ - ピンチズーム開始
+      isDragging = false;
+      const touch1 = getTouchPos(e.touches[0]);
+      const touch2 = getTouchPos(e.touches[1]);
+      lastTouchDistance = Math.hypot(touch2.x - touch1.x, touch2.y - touch1.y);
+      lastTouchCenter = {
+        x: (touch1.x + touch2.x) / 2,
+        y: (touch1.y + touch2.y) / 2,
+      };
+    }
+  });
+
+  canvas?.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+
+    if (e.touches.length === 1 && isDragging) {
+      // シングルタッチ - パン
+      const touchPos = getTouchPos(e.touches[0]);
+      offsetX += touchPos.x - lastPanPoint.x;
+      offsetY += touchPos.y - lastPanPoint.y;
+      lastPanPoint = touchPos;
+      constrainPan();
+      drawImage();
+      updateSlider();
+    } else if (e.touches.length === 2) {
+      // マルチタッチ - ピンチズーム
+      const touch1 = getTouchPos(e.touches[0]);
+      const touch2 = getTouchPos(e.touches[1]);
+      const currentDistance = Math.hypot(
+        touch2.x - touch1.x,
+        touch2.y - touch1.y,
+      );
+      const currentCenter = {
+        x: (touch1.x + touch2.x) / 2,
+        y: (touch1.y + touch2.y) / 2,
+      };
+
+      if (lastTouchDistance > 0) {
+        const scaleFactor = currentDistance / lastTouchDistance;
+        const newScale = scale * scaleFactor;
+
+        // ズーム制限
+        if (newScale >= minScale && newScale <= maxScale) {
+          // 画像の中央配置オフセットを計算
+          const imageOffsetX =
+            (canvas.width / scale - currentImage.naturalWidth) / 2;
+          const imageOffsetY =
+            (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+          // タッチ中心のワールド座標を計算（中央配置オフセットを考慮）
+          const worldX = (currentCenter.x - offsetX) / scale - imageOffsetX;
+          const worldY = (currentCenter.y - offsetY) / scale - imageOffsetY;
+
+          // スケール更新
+          scale = newScale;
+
+          // 新しい画像オフセットを計算
+          const newImageOffsetX =
+            (canvas.width / scale - currentImage.naturalWidth) / 2;
+          const newImageOffsetY =
+            (canvas.height / scale - currentImage.naturalHeight) / 2;
+
+          // 同じワールド座標がタッチ中心に来るようにオフセット調整
+          offsetX = currentCenter.x - (worldX + newImageOffsetX) * scale;
+          offsetY = currentCenter.y - (worldY + newImageOffsetY) * scale;
+        }
+      }
+
+      // パンも同時に処理
+      offsetX += currentCenter.x - lastTouchCenter.x;
+      offsetY += currentCenter.y - lastTouchCenter.y;
+
+      lastTouchDistance = currentDistance;
+      lastTouchCenter = currentCenter;
+      constrainPan();
+      drawImage();
+      updateSlider();
+    }
+  });
+
+  canvas?.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    isDragging = false;
+    lastTouchDistance = 0;
+  });
+
+  // カーソルスタイル設定
+  canvas?.addEventListener("mouseenter", () => {
+    if (!isDragging) canvas.style.cursor = "grab";
+  });
+
+  // 小さい図のクリックイベント
+  small?.addEventListener("click", () => {
+    const imageSrc = small.src;
+    drawImageToCanvas(imageSrc);
+  });
+
+  // 大きい図のクリックイベント
+  large?.addEventListener("click", () => {
+    const imageSrc = large.src;
+    drawImageToCanvas(imageSrc);
+  });
+
+  // ダイアログの外をクリックで閉じる
+  dialog?.addEventListener("click", (e) => {
+    const rect = dialog.getBoundingClientRect();
+    if (
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      dialog.close();
+    }
+  });
+
+  // ダイアログが閉じられた時の処理
+  dialog?.addEventListener("close", () => {
+    if (zoomSlider) {
+      zoomSlider.value = 0;
+      // スライダー関連要素のスタイルをリセット
+      const sliderParent = zoomSlider.parentElement;
+      if (sliderParent) {
+        // CSS変数を初期値に設定
+        sliderParent.style.setProperty("--_start", "0%");
+        sliderParent.style.setProperty("--_end", "100%");
+        sliderParent.style.setProperty("--_value1", "0");
+        sliderParent.style.setProperty("--_value2", "0");
+      }
     }
   });
 </script>
