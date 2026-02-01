@@ -38,14 +38,14 @@ const { id, related = [] } = Astro.props as { id: string; related: string[] };
     src=`https://d3uyg5l5xqk73p.cloudfront.net/svg_s/${encodeURIComponent(decode(id))}.svg`
     width="100%"
     alt={decode(id)}
-    style="display: block; cursor: pointer;"
+    style="display: block; cursor: pointer; touch-action: manipulation;"
     id="small-diagram"
   />
   <img
     src=`https://d3uyg5l5xqk73p.cloudfront.net/svg/${encodeURIComponent(decode(id))}.svg`
     width="100%"
     alt={decode(id)}
-    style="display: none; cursor: pointer;"
+    style="display: none; cursor: pointer; touch-action: manipulation;"
     id="large-diagram"
   />
 </article>
@@ -476,8 +476,22 @@ const { id, related = [] } = Astro.props as { id: string; related: string[] };
     drawImageToCanvas(imageSrc);
   });
 
+  // 小さい図のタッチイベント（スマホ対応）
+  small?.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    const imageSrc = small.src;
+    drawImageToCanvas(imageSrc);
+  });
+
   // 大きい図のクリックイベント
   large?.addEventListener("click", () => {
+    const imageSrc = large.src;
+    drawImageToCanvas(imageSrc);
+  });
+
+  // 大きい図のタッチイベント（スマホ対応）
+  large?.addEventListener("touchend", (e) => {
+    e.preventDefault();
     const imageSrc = large.src;
     drawImageToCanvas(imageSrc);
   });
