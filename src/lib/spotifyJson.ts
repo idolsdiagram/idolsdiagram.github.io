@@ -38,5 +38,5 @@ export const spotifyJson: {
     }[] = JSON.parse(bodyContents);
 
     return artistDaily.filter(
-        (item) => item.popularity > 0).filter((item) => groupJson.data[item.name] !== undefined);
+        (item) => item.popularity > 0).filter((item) => groupJson.data[item.key] !== undefined);
 })();
