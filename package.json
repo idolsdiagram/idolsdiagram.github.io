@@ -14,7 +14,7 @@
     "@aws-sdk/client-s3": "^3.1158.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "astro": "^5.16.6",
+    "astro": "^7.4.2",
     "beercss": "^5.0.3",
     "dotenv": "^17.2.3",
     "material-dynamic-colors": "^1.1.4",
