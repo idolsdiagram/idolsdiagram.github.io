@@ -9,7 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/react": "^4.4.2",
+    "@astrojs/react": "^7.1.1",
     "@astrojs/sitemap": "^3.7.4",
     "@aws-sdk/client-s3": "^3.1158.0",
     "@types/react": "^19.3.0",
