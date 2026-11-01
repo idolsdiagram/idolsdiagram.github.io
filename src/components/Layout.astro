@@ -70,3 +70,9 @@ const { title }: { title?: string } = Astro.props;
       is:inline></script>
   </body>
 </html>
+
+<style is:global>
+  body:has(> main) {
+    grid-template-columns: auto 1fr auto;
+  }
+</style>
