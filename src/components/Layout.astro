@@ -73,10 +73,6 @@ const { title }: { title?: string } = Astro.props;
 
 <style is:global>
   body:has(> main) {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  body:has(> main) > main {
-    overflow: hidden;
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 </style>
