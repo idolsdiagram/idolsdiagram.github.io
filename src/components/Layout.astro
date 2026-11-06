@@ -1,5 +1,5 @@
 ---
-import "material-dynamic-colors";
+import "../styles/globals.css";
 const { title }: { title?: string } = Astro.props;
 ---
 
@@ -43,11 +43,8 @@ const { title }: { title?: string } = Astro.props;
     <meta name="description" content={import.meta.env.OG_DESCRIPTION} />
     <title>IDOLS DIAGRAM{title ? ` | ${title}` : ""}</title>
   </head>
-  <body class="dark">
+  <body class="dark min-h-screen bg-background text-foreground antialiased">
     <slot />
-    <script>
-      import "beercss";
-    </script>
     <script
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.GA_MEASUREMENT_ID}`}
@@ -70,9 +67,3 @@ const { title }: { title?: string } = Astro.props;
       is:inline></script>
   </body>
 </html>
-
-<style is:global>
-  body:has(> main) {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-</style>

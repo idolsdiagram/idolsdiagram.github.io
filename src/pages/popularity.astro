@@ -11,28 +11,30 @@ const artists = artistDailyJson
 
 <Layout>
   <Nav />
-  <main class="responsive">
-    <table>
-      <thead>
-        <tr>
-          <th class="center-align">Artist</th>
-          <th class="center-align">Spotify Popularity</th>
-          <th class="center-align">Spotify Followers</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          artists.map((artist) => (
-            <tr>
-              <td>
-                <a href={`/g/${encode(artist.key)}`}>{artist.key}</a>
-              </td>
-              <td class="center-align">{artist.popularity}</td>
-              <td class="right-align">{artist.followers.toLocaleString()}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
+  <main class="min-w-0 overflow-x-hidden pb-[calc(3.5rem_+_env(safe-area-inset-bottom))] lg:ml-20 lg:pb-8">
+    <div class="mx-auto w-full min-w-0 max-w-5xl px-3 pb-6 pt-0 sm:px-6 sm:py-6 lg:px-8">
+      <table class="w-full table-fixed border-collapse overflow-hidden rounded-lg border bg-card text-xs sm:text-sm">
+        <thead>
+          <tr class="border-b bg-muted/50 text-left">
+            <th class="w-[40%] break-words px-2 py-3 font-medium sm:px-4">Artist</th>
+            <th class="w-[30%] break-words px-2 py-3 text-right font-medium sm:px-4">Spotify Popularity</th>
+            <th class="w-[30%] break-words px-2 py-3 text-right font-medium sm:px-4">Spotify Followers</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            artists.map((artist) => (
+              <tr class="border-b last:border-0 hover:bg-muted/40">
+                <td class="break-all px-2 py-3 sm:px-4">
+                  <a class="font-medium hover:underline" href={`/g/${encode(artist.key)}`}>{artist.key}</a>
+                </td>
+                <td class="px-2 py-3 text-right tabular-nums sm:px-4">{artist.popularity}</td>
+                <td class="px-2 py-3 text-right tabular-nums sm:px-4">{artist.followers.toLocaleString()}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
   </main>
 </Layout>

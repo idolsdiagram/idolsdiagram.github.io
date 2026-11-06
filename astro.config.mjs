@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 import react from '@astrojs/react';
 
 import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
 
 config();
 
@@ -13,8 +14,6 @@ export default defineConfig({
   site: process.env.SITE_URL,
   integrations: [react(), sitemap()],
   vite: {
-    ssr: {
-      noExternal: ['beercss', 'material-dynamic-colors']
-    }
+    plugins: [tailwindcss()],
   },
 });

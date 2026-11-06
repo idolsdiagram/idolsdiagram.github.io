@@ -5,48 +5,14 @@ import Nav from "../components/Nav.astro";
 
 <Layout title="404 Not Found">
   <Nav />
-  <main class="center-align middle-align">
-    <div class="large-space"></div>
-    <div class="large-space"></div>
+  <main class="grid min-h-[80vh] place-items-center px-4 pb-[calc(3.5rem_+_env(safe-area-inset-bottom))] text-center lg:ml-20 lg:pb-8">
     <div>
-      <h1 class="large-text">404</h1>
-      <h5 class="large-text">Page Not Found</h5>
-      <div class="space"></div>
-      <p class="medium-text">
+      <h1 class="m-0 text-8xl font-bold tracking-tight sm:text-9xl">404</h1>
+      <h2 class="mt-2 text-2xl font-semibold">Page Not Found</h2>
+      <p class="mt-5 max-w-lg text-muted-foreground">
         The page you are looking for does not exist or may have been moved.
       </p>
+      <a href="/" class="mt-7 inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:bg-primary/85">トップへ戻る</a>
     </div>
-    <div class="large-space"></div>
   </main>
 </Layout>
-
-<style>
-  main {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  h1 {
-    font-size: 8rem;
-    font-weight: bold;
-    margin: 0;
-  }
-
-  h5 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    opacity: 0.7;
-  }
-
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 6rem;
-    }
-  }
-</style>
