@@ -1,5 +1,7 @@
 allowBuilds:
-  sharp: set this to true or false
+  esbuild: true
+  sharp: false
+  workerd: true
 overrides:
   astro@<=7.4.4: ^7.4.5
   astro@>=5.14.3 <=7.4.6: ^7.4.7
