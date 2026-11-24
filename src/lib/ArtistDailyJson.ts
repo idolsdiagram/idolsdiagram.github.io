@@ -1,4 +1,5 @@
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "./s3Client";
 
 export const artistDailyJson: {
     key: string;
@@ -7,14 +8,6 @@ export const artistDailyJson: {
     popularity: number;
     followers: number;
 }[] = await (async () => {
-    const s3Client = new S3Client({
-        region: import.meta.env.S3_REGION,
-        credentials: {
-            accessKeyId: import.meta.env.S3_ACCESS_KEY_ID,
-            secretAccessKey: import.meta.env.S3_SECRET_ACCESS_KEY,
-        },
-        forcePathStyle: true,
-    });
     const response = await s3Client.send(
         new GetObjectCommand({
             Bucket: import.meta.env.S3_BUCKET_SPOTIFY,
